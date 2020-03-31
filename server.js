@@ -1,26 +1,29 @@
-const { createServer } = require('http')
-const { parse } = require('url')
-const next = require('next')
+const express = require('express');
+const compression = require('compression');
+const next = require('next');
 
-const port = process.env.PORT || 3000
-const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
+const dev = process.env.NODE_ENV !== 'production';
+console.log(process.env.NODE_ENV);
+const app = next({ dev });
+const handle = app.getRequestHandler();
+const port = process.env.PORT || 3000;
 
-app.prepare().then(() => {
-    createServer((req, res) => {
-        const parsedUrl = parse(req.url, true)
-        const { pathname, query } = parsedUrl
+app.prepare()
+    .then(() => {
+        const server = express();
 
-        if (pathname === '/a') {
-            app.render(req, res, '/a', query)
-        } else if (pathname === '/b') {
-            app.render(req, res, '/b', query)
-        } else {
-            handle(req, res, parsedUrl)
-        }
-    }).listen(port, err => {
-        if (err) throw err
-        console.log(`> Ready on http://localhost:${port}`)
+        server.use(compression());
+
+        server.get('*', (req, res) => {
+            return handle(req, res);
+        });
+
+        server.listen(port, (err) => {
+            if (err) throw err;
+            console.log(`> Ready on http://localhost:${port}`);
+        });
     })
-})
+    .catch((ex) => {
+        console.error(ex.stack);
+        process.exit(1);
+    });
