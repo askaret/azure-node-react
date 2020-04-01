@@ -6,7 +6,7 @@ const Content = () => {
     return (
         <>
             <h1>{router.query.title}</h1>
-            <p>This is the blåg post content.</p>
+            <p>This is the blÃ¸g post content.</p>
             <b>{router.query.poop}</b>
         </>
     );
