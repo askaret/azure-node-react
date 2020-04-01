@@ -8,6 +8,7 @@ const PostLink = props => (
         </Link>
     </li>
 );
+
 export default function Blog() {
     return (
         <Layout>
