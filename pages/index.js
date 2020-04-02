@@ -17,6 +17,8 @@ const Index = props => (
         </li>
       ))}
     </ul>
+
+    
   </Layout>
 );
 
@@ -25,7 +27,7 @@ Index.getInitialProps = async function() {
     const data = await res.json();
     
     console.log(`Show data fetched. Count: ${data.length}`);
-
+    
   return {
     shows: data.map(entry => entry.show)
   };
@@ -33,6 +35,7 @@ Index.getInitialProps = async function() {
 
 export default Index;
 
+// Data Source=KJELLER\KJELLER2019;Initial Catalog=BouvetBeertastingDbFromAzure;Integrated Security=True
 // import Layout from '../components/layout';
 // import Link from 'next/link';
 
