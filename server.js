@@ -9,6 +9,32 @@ const handle = app.getRequestHandler();
 const port = process.env.PORT || 3000;
 const sql = require("mssql");
 
+const config = {
+    user: '',
+    password: '',
+    server: 'localhost\\KJELLER2019',
+    database: 'BouvetBeertastingDbFromAzure',
+};
+
+//const sql = require('mssql')
+
+
+sql.connect(config, function (err) {
+    let sqlRequest = new sql.Request();
+    let sqlQuery = 'SELECT * from Beer';
+    sqlRequest.query(sqlQuery, function (err, data){
+
+        if(err) console.log(err);
+
+        //console.log(data);
+        console.log(data.recordset);
+        console.table(data.recordset);
+        console.log(data.recordset[0]);
+
+        sql.close();
+    });
+});
+
 app.prepare()
     .then(() => {
       
@@ -24,7 +50,15 @@ app.prepare()
         //       instancename: 'KJELLER19'
         //     }
         //   };
-
+        
+        // sql.connect(config).then(pool => {
+        //     return pool.request()
+        //     .query('select * from Beer');
+        // }).then(result => {
+        //     //console.table(result)    
+        // }).catch(err => {
+        //   console.log(err)
+        // });
         
         server.get('*', (req, res) => {
             return handle(req, res);
